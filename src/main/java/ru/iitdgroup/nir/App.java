@@ -1,13 +1,57 @@
 package ru.iitdgroup.nir;
 
-/**
- * Hello world!
- *
- */
-public class App 
+import java.io.File;
+import java.util.Objects;
+
+public class App
 {
-    public static void main( String[] args )
+    private static void RecursivePrint(File[] arr, int index, int level)
     {
-        System.out.println( "Hello World!" );
+
+        if(index == arr.length)
+            return;
+
+
+        for (int i = 0; i < level; i++)
+            System.out.print("\t");
+
+
+        if(arr[index].isFile())
+            System.out.println(arr[index].getName());
+
+
+        else if(arr[index].isDirectory())
+        {
+            System.out.println("[" + arr[index].getName() + "]");
+
+
+            RecursivePrint(Objects.requireNonNull(arr[index].listFiles()), 0, level + 1);
+        }
+
+
+        RecursivePrint(arr,++index, level);
+    }
+
+
+    public static void main(String[] args)
+    {
+
+        String maindirpath = ".";
+
+
+        File maindir = new File(maindirpath);
+
+        if(maindir.exists() && maindir.isDirectory())
+        {
+
+            File arr[] = maindir.listFiles();
+
+            System.out.println("**********************************************");
+            System.out.println("Files from main directory : " + maindir);
+            System.out.println("**********************************************");
+
+
+            RecursivePrint(arr,0,0);
+        }
     }
 }
